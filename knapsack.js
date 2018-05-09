@@ -54,7 +54,7 @@ function naiveKnapsack(items, capacity) {
 }
 
 function lessNaiveKnapsack(items, capacity) {
-  const returnArr = {
+  const returnObj = {
     value: 0,
     size: 0,
     chosen: [],
@@ -67,6 +67,18 @@ function lessNaiveKnapsack(items, capacity) {
   const itemsAscRatio = _.sortBy(items, 'ratio');
   const itemsDescRatio = itemsAscRatio.reverse();
   console.log(itemsDescRatio);
+
+  while (returnObj.size <= capacity) {
+    if (itemsDescRatio[0] === null || itemsDescRatio[0] === undefined)
+      itemsDescRatio.shift();
+    if (returnObj.size + itemsDescRatio[1].size > capacity) break;
+    returnObj.value += itemsDescRatio[0].value;
+    returnObj.size += itemsDescRatio[0].size;
+    returnObj.chosen.push(itemsDescRatio[0].index);
+    itemsDescRatio.shift();
+  }
+  returnObj.chosen.sort();
+  return returnObj;
 }
 
 const argv = process.argv.slice(2);
